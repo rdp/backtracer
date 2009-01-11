@@ -83,7 +83,8 @@ class Tracer
   end
 
   def self.get_line(file, line)
-    if @get_line_procs && p = @get_line_procs[file]
+    @get_line_procs ||= {}
+    if p = @get_line_procs[file]
       return p.call(line)
     end
 
@@ -228,6 +229,10 @@ class Tracer
     puts "unhandled exception: #{loc[0]}:#{loc[1]}:  #{get_line loc[0], loc[1]}"
     output_locals(raise_location[2], "\t")
     puts "\t  from:\n"
+
+    # last most one is redundant with the raise one...
+    Thread.current['backtrace'].pop
+
     for loc, params, binding in Thread.current['backtrace'].reverse do
         original_line = get_line loc[0], loc[1]
 	# TODO handle non parentheses
