@@ -1,6 +1,5 @@
 def go2(a, b)
  3
- puts 'crashing'
  b = 3
  within_go2 = 4
  raise

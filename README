@@ -39,3 +39,5 @@ unhandled exception: crash.rb:6:   raise
 
 
 depends on ruby-debug [MRI]
+
+related projects: unroller, http://eigenclass.org/hiki/method+arguments+via+introspection
