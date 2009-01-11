@@ -119,15 +119,17 @@ class Tracer
   end
 
   require 'pp' 
-  @@last_line = 3
-  @@last_symbol = nil
   @@depths = {} # I think I added this [rdp]
+  @@last_line = nil
+  @@last_file = nil
+  @@last_symbol = nil
   def trace_func(event, file, line, id, binding, klass, *nothing)
    begin
     return if file == __FILE__
 
     type = EVENT_SYMBOL[event] # "<" or ">"
     thread_no = get_thread_no
+    Thread.current['backtrace'] ||= []
     @@depths[thread_no] ||= 0
     if type == ">"
       @@depths[thread_no] += 1
@@ -142,12 +144,10 @@ class Tracer
     return if file.include? 'ruby-debug' # debugger output
 
     saved_crit = Thread.critical
-    Thread.current['backtrace'] ||= []
     Thread.critical = true
 # TODO only do the backtrace if last command was 'raise'
     if type == 'R'
-      pp 'current is', Thread.current
-         Thread.current['backtrace'][@@depths[thread_no] - 1] = [[file, line], binding]
+         Thread.current['backtrace'][@@depths[thread_no] - 1] = [[file, line], [], binding]
          Thread.current['backtrace'] = Thread.current['backtrace'][0..@@depths[thread_no]] # clear old stuffs
     end
 
@@ -167,9 +167,10 @@ class Tracer
          end
          print 'args were ', collected.inspect, "\n"
 
-	 Thread.current['backtrace'][@@depths[thread_no] - 1] = [@@last_line, collected, previous_frame_binding]
+	 Thread.current['backtrace'][@@depths[thread_no] - 1] = [[@@last_file, @@last_line], collected, previous_frame_binding]
       end
-      out = " |" * @@depths[thread_no] + sprintf("#%d:%s:%d:%s:%s: %s",
+    end
+    out = " |" * @@depths[thread_no] + sprintf("#%d:%s:%d:%s:%s: %s",
        get_thread_no,
        file,
        line,
@@ -177,8 +178,10 @@ class Tracer
        type,
        get_line(file, line))
 
-      print out
-   end
+   print out
+   @@last_line =  line
+   @@last_file = file
+   @@last_symbol = type
 
    Thread.critical = saved_crit
    rescue Exception => e
@@ -207,26 +210,26 @@ class Tracer
   def Tracer.add_filter(p = proc)
     Single.add_filter(p)
   end
-  def Tracer.output_locals(previous_binding)
+
+  def Tracer.output_locals(previous_binding, prefix="\t\t")
     locals_name = Kernel.eval("local_variables", previous_binding)
     locals = {}
     for name in locals_name do
 	locals[name] = Kernel.eval(name, previous_binding)
     end
     
-    puts "\t\tlocals: " + locals.inspect
+    puts "#{prefix}locals: " + locals.inspect
   end
 
 
   at_exit do # at_exit seems to be run by the last running Thread. Or an exiting thread? Not sure for always.
     off
-
     raise_location = Thread.current['backtrace'].pop
     loc = raise_location[0]
     puts
     puts "#{loc[0]}:#{loc[1]} unhandled exception: #{get_line loc[0], loc[1]}"
-    output_locals(raise_location[1])
-    puts "\t from:"
+    output_locals(raise_location[2], "\t")
+    puts "\tfrom:\n"
     for loc, params, binding in Thread.current['backtrace'].reverse do
         original_line = get_line loc[0], loc[1]
 	# TODO handle non parentheses
@@ -239,7 +242,7 @@ class Tracer
 	 comma = ", "
 	end
 	line_params = line_params[0..-3] # strip off ending comma
-	line_params += ")"
+	line_params += ")" if line_params =~ /\(/
         puts "\t #{loc[0]}:#{loc[1]} #{line_params}" 
 	output_locals binding
     end
@@ -263,9 +266,4 @@ elsif caller(0).size == 1
 end
 
 # TODO: do are arg snapshots capture it right [soon enough]?
-
-    end
-
-    @@last_symbol = type
-    @@last_line = [file, line]
-
+# TODO: don't output error if none thrown :)
