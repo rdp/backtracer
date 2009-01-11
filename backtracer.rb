@@ -1,16 +1,13 @@
 #
-#   tracer2.rb - display backtrace of most recent error on exit [quality back trace, mind you]
-# 	based off tracer.rb and unroller
+#   backtracer.rb - display backtrace of most recent error on exit [quality back trace, mind you]
+# 	based off tracer.rb, unroller, python
 #   	original tracer.rb by Keiju ISHITSUKA(Nippon Rational Inc.)
-#
-#
-
-
-
+# Tons of the code is useless and could be removed, but at least it works
 
 require 'rubygems'
 require 'ruby-debug'
 Debugger.start # we use this to track args.
+
 #Debugger.keep_frame_binding = true # whatever this did :P
 #
 # tracer main class
@@ -131,9 +128,9 @@ class Tracer
     thread_no = get_thread_no
     Thread.current['backtrace'] ||= []
     @@depths[thread_no] ||= 0
+    Thread.current['backtrace'] << nil if Thread.current['backtrace'].length  < (@@depths[thread_no] ) # pad it :)
     if type == ">"
       @@depths[thread_no] += 1
-      Thread.current['backtrace'] << nil if Thread.current['backtrace'].length  < (@@depths[thread_no] - 2) # pad it :)
     elsif type == "<"
       @@depths[thread_no] -= 1
     end
@@ -165,11 +162,12 @@ class Tracer
 	 else
 	   print "WEIRD--please report err spot 1, how to reproduce"
          end
-         print 'args were ', collected.inspect, "\n"
+         print 'args were ', collected.inspect, "\n" if $VERBOSE
 
 	 Thread.current['backtrace'][@@depths[thread_no] - 1] = [[@@last_file, @@last_line], collected, previous_frame_binding]
       end
     end
+
     out = " |" * @@depths[thread_no] + sprintf("#%d:%s:%d:%s:%s: %s",
        get_thread_no,
        file,
@@ -178,7 +176,7 @@ class Tracer
        type,
        get_line(file, line))
 
-   print out
+   print out if $VERBOSE
    @@last_line =  line
    @@last_file = file
    @@last_symbol = type
@@ -227,9 +225,9 @@ class Tracer
     raise_location = Thread.current['backtrace'].pop
     loc = raise_location[0]
     puts
-    puts "#{loc[0]}:#{loc[1]} unhandled exception: #{get_line loc[0], loc[1]}"
+    puts "unhandled exception: #{loc[0]}:#{loc[1]}:  #{get_line loc[0], loc[1]}"
     output_locals(raise_location[2], "\t")
-    puts "\tfrom:\n"
+    puts "\t  from:\n"
     for loc, params, binding in Thread.current['backtrace'].reverse do
         original_line = get_line loc[0], loc[1]
 	# TODO handle non parentheses
@@ -243,7 +241,7 @@ class Tracer
 	end
 	line_params = line_params[0..-3] # strip off ending comma
 	line_params += ")" if line_params =~ /\(/
-        puts "\t #{loc[0]}:#{loc[1]} #{line_params}" 
+        puts "\t#{loc[0]}:#{loc[1]} #{line_params}" 
 	output_locals binding
     end
 
