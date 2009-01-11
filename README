@@ -37,3 +37,5 @@ unhandled exception: crash.rb:6:   raise
         crash.rb:8 go(a=>3)
                 locals: {"a"=>"3", "within_go"=>2}
 
+
+depends on ruby-debug [MRI]
