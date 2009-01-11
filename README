@@ -1,59 +1,39 @@
+A library to output quality backtraces if an unhandled exception occurs:
+
+
+ex:
+ruby -rbacktracer crash.rb
+
+unhandled exception: crash.rb:6:   raise
+        locals: {"a"=>"3", "b"=>3, "within_go2"=>4}
+          from:
+        crash.rb:1 go2(a=>3, b=>55)
+                locals: {"a"=>"3", "b"=>3, "within_go2"=>4}
+        crash.rb:8 go(a=>3)
+                locals: {"a"=>"3", "within_go"=>2}
+
+
+
+if you run it in VERBOSE mode it outputs each call as its made
+ruby -v -rbacktracer crash.rb
+
 #0:crash.rb:1::-: def go2(a, b)
- |#0:crash.rb:1:Module:>: def go2(a, b)
+ |#0:crash.rb:1:Module:>: def go2(a, b)                                                            1,3-10 Allargs were [["topmost", nil]]
+#0:crash.rb:1:Module:<: def go2(a, b) raise
+#0:crash.rb:8::-: def go(a);
+ |#0:crash.rb:8:Module:>: def go(a);
 args were [["topmost", nil]]
-BADindex -1 out of array["./backtracer.rb:167:in `[]='", "./backtracer.rb:167:in `trace_func'", "c:/ruby18/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:31:in `to_proc'", "crash.rb:1:in `method_added'", "crash.rb:1"]args were []
-BADindex -1 out of array["./backtracer.rb:167:in `[]='", "./backtracer.rb:167:in `trace_func'", "c:/ruby18/lib/ruby/site_ruby/1.8/rubygems/custom_require.rb:31:in `to_proc'", "crash.rb:8", "crash.rb:8"]args were []
- |#0:crash.rb:8:Module:>: def go(a); 
-args were [["topmost", nil]]
-#0:crash.rb:8:Module:<: def go(a); 
-#0:crash.rb:14::-: topmost =1
+#0:crash.rb:8:Module:<: def go(a);
+#0:crash.rb:14::-: topmost =1  raise
 #0:crash.rb:15::-: go '3'
- |#0:crash.rb:8:Object:>: def go(a); 
+ |#0:crash.rb:8:Object:>: def go(a); s] (22:09 10/01/2009)                                              1
 args were [["a", "3"]]
- |#0:crash.rb:9:Object:-:  within_go = 2
- |#0:crash.rb:10:Object:-:  $STOP = true
- |#0:crash.rb:11:Object:-:  go2(a, 55); 
- | |#0:crash.rb:1:Object:>: def go2(a, b)
-args were [["a", "3"], ["b", 55]]
- | |#0:crash.rb:3:Object:-:  puts 'crashing'
- | | |#0:crash.rb:3:Kernel:>:  puts 'crashing'
-args were [["a", "3"]]
- | | | |#0:crash.rb:3:IO:>:  puts 'crashing'
-crashingargs were [["a", "3"]]
- | | |#0:crash.rb:3:IO:<:  puts 'crashing'
- | | | |#0:crash.rb:3:IO:>:  puts 'crashing'
+... [there's more]
+unhandled exception: crash.rb:6:   raise
+        locals: {"a"=>"3", "b"=>3, "within_go2"=>4}
+          from:
+        crash.rb:1 go2(a=>3, b=>55)
+                locals: {"a"=>"3", "b"=>3, "within_go2"=>4}
+        crash.rb:8 go(a=>3)
+                locals: {"a"=>"3", "within_go"=>2}
 
-args were [["a", "3"]]
- | | |#0:crash.rb:3:IO:<:  puts 'crashing'
- | |#0:crash.rb:3:Kernel:<:  puts 'crashing'
- | |#0:crash.rb:4:Object:-:  b = 3
- | |#0:crash.rb:5:Object:-:  within_go2 = 4
- | |#0:crash.rb:6:Object:-:  raise
- | | |#0:crash.rb:6:Kernel:>:  raise
-args were []
- | | | |#0:crash.rb:6:Class:>:  raise
-args were []
- | | | | |#0:crash.rb:6:Exception:>:  raise
-args were []
- | | | |#0:crash.rb:6:Exception:<:  raise
- | | |#0:crash.rb:6:Class:<:  raise
- | | | |#0:crash.rb:6:Exception:>:  raise
-args were []
- | | |#0:crash.rb:6:Exception:<:  raise
- | | | |#0:crash.rb:6:Exception:>:  raise
-args were []
- | | |#0:crash.rb:6:Exception:<:  raise
- | | |#0:crash.rb:6:Object:R:  raise
- | |#0:crash.rb:6:Kernel:<:  raise
- |#0:crash.rb:3:Object:<:  puts 'crashing'
-#0:crash.rb:9:Object:<:  within_go = 2
-
-crash.rb:6 unhandled exception:  raise
-	locals: {"a"=>"3", "b"=>3, "within_go2"=>4}
-	from:
-	 crash.rb:6  raise
-		locals: {"a"=>"3", "b"=>3, "within_go2"=>4}
-	 crash.rb:1 go2(a=>3, b=>55)
-		locals: {"a"=>"3", "b"=>3, "within_go2"=>4}
-	 crash.rb:8 go(a=>3)
-		locals: {"a"=>"3", "within_go"=>2}
