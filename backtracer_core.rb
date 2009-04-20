@@ -227,7 +227,12 @@ class Tracer
     loc = raise_location[0]
     puts
     puts "unhandled exception: #{loc[0]}:#{loc[1]}:  #{get_line loc[0], loc[1]}"
-    output_locals(raise_location[2], "\t")
+    if(defined?($NO_LOCALS))
+      no_locals = true
+    else
+     no_locals = false
+    end
+    output_locals(raise_location[2], "\t") unless no_locals
     puts "\t  from:\n"
 
     # last most one is redundant with the raise one...
@@ -247,7 +252,7 @@ class Tracer
 	line_params = line_params[0..-3] # strip off ending comma
 	line_params += ")" if line_params =~ /\(/
         puts "\t#{loc[0]}:#{loc[1]} #{line_params}" 
-	output_locals binding
+	output_locals binding unless no_locals
     end
 
 
