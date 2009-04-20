@@ -2,7 +2,7 @@ A library to output quality backtraces if an unhandled exception occurs:
 
 
 ex:
-ruby -rbacktracer crash.rb
+ruby -rbacktrace_with_code_and_locals crash.rb
 
 unhandled exception: crash.rb:6:   raise
         locals: {"a"=>"3", "b"=>3, "within_go2"=>4}
@@ -14,8 +14,13 @@ unhandled exception: crash.rb:6:   raise
 
 Wasn't that pretty?
 Drawback: makes your script run much more slowly.
+backtrace_all_lines doesn't have that disadvantage, but doesn't output things as pretty. 
 
-Note also that you could require this file sometime 'mid stream' and it would track thread backtraces from then on
+try them all out, some are more verbose than others.
+
+TODO make backtrace_all_lines lookup code lines at_exit
+
+Note also that you could require a file sometime 'mid stream' and it would track thread backtraces from then on
 
 
 if you run it in VERBOSE mode it outputs each call as its made
