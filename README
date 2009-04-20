@@ -12,6 +12,7 @@ unhandled exception: crash.rb:6:   raise
         crash.rb:8 go(a=>3)
                 locals: {"a"=>"3", "within_go"=>2}
 
+Wasn't that pretty?
 
 
 if you run it in VERBOSE mode it outputs each call as its made
@@ -38,6 +39,6 @@ unhandled exception: crash.rb:6:   raise
                 locals: {"a"=>"3", "within_go"=>2}
 
 
-depends on ruby-debug [MRI]
+depends on ruby-debug [MRI] gem
 
-related projects: unroller, http://eigenclass.org/hiki/method+arguments+via+introspection
+related projects: unroller, this: http://eigenclass.org/hiki/method+arguments+via+introspection, liveconsole
