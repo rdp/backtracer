@@ -184,7 +184,7 @@ class Tracer
 
    Thread.critical = saved_crit
    rescue Exception => e
-	print "BAD" + e.to_s + e.backtrace.inspect
+	# TODO investigate print "BAD" + e.to_s + e.backtrace.inspect
    end
   end
 

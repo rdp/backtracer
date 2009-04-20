@@ -13,6 +13,9 @@ unhandled exception: crash.rb:6:   raise
                 locals: {"a"=>"3", "within_go"=>2}
 
 Wasn't that pretty?
+Drawback: makes your script run much more slowly.
+
+Note also that you could require this file sometime 'mid stream' and it would track thread backtraces from then on
 
 
 if you run it in VERBOSE mode it outputs each call as its made
