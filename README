@@ -32,8 +32,8 @@ http://github.com/rogerdpack/ruby_backtracer/tree/master
 
 Note: some options depends on ruby-debug [MRI] gem, some don't.
 
-To install clone from github, above, then -rscriptname.
+To install clone from github, above, then ruby -rscriptname your_script.
 
 related projects: unroller, http://eigenclass.org/hiki/method+arguments+via+introspection, liveconsole, ruby-debug
 
-comments to rogerdpack on github.
+send comments to rogerdpack on github.
