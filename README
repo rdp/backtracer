@@ -22,7 +22,9 @@ Now wasn't that prettier?
 
 There are several other tracing options provided, if you don't want as much output, or want more speed.  Specify which by script name.
 
-ex: backtrace_nothing_swallowed.rb outputs the same as the default exception output, except it doesn't have the ...skip 24 lines... line in the middle (also no speed slowdown, and no local variables displayed).
+ex: backtrace_nothing_swallowed.rb outputs the same as the default exception output, except it doesn't have the 
+...skip 24 lines... 
+line in the middle (also no speed slowdown, and no local variables displayed).
 
 Try them out by running test_all.rb in the examples folder, or eyeball the example output files in examples/example_output*
 
