@@ -2,6 +2,7 @@ A library to output higher quality backtraces if an unhandled exception is raise
 
 ex:
 running given script examples/crash.rb used to output:
+examples>ruby crash.rb
 crash.rb:2:in `go2': unhandled exception
         from crash.rb:6:in `go'
         from crash.rb:9
