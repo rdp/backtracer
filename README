@@ -1,4 +1,4 @@
-A library to output higher quality backtraces if an unhandled exception is raised
+ruby_backtracer: a library to output higher quality backtraces if an unhandled exception is raised
 
 ex:
 running given script examples/crash.rb used to output:
