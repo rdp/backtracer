@@ -18,7 +18,7 @@ unhandled exception: crash.rb:2:   raise
         crash.rb:5 go(a=>3)
                 locals: {"a"=>"3"}
 
-Wasn't that prettier than the default?
+Now wasn't that prettier?
 
 There are several other tracing options provided, if you don't want as much output, or want more speed.  Specify which by script name.
 
