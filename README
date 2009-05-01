@@ -4,19 +4,13 @@ A library to output higher quality backtraces if an unhandled exception is raise
 ex:
 
 
-running script crash.rb that has contents:
-def go2(a, b)
- raise
-end
+running given script examples/crash.rb used to output:
+crash.rb:2:in `go2': unhandled exception
+        from crash.rb:6:in `go'
+        from crash.rb:9
 
-def go(a);
- go2(a, 55);
-end
-
-go '3'
-
-yields:
-C:\dev\ruby\ruby_backtracer\examples>ruby -r../backtrace_with_code_and_locals crash.rb
+now outputs:
+examples>ruby -r../backtrace_with_code_and_locals crash.rb
 
 unhandled exception: crash.rb:2:   raise
         locals: {"a"=>"3", "b"=>55}
@@ -26,22 +20,20 @@ unhandled exception: crash.rb:2:   raise
         crash.rb:5 go(a=>3)
                 locals: {"a"=>"3"}
 
-Wasn't that prettier than the default output:
-crash.rb:2:in `go2': unhandled exception
-        from crash.rb:6:in `go'
-        from crash.rb:9
-?
+Wasn't that prettier than the default?
 
-There are several other options allowed, if you don't want as much output, or want more speed.  Specify by script name.
+There are several other tracing options provided, if you don't want as much output, or want more speed.  Specify which by script name.
 
-backtrace_nothing_swallowed.rb is the same as the typical exception output, except it doesn't have the ...skip 24 lines... output in the middle. No speed slowdown.
-
+ex: backtrace_nothing_swallowed.rb outputs the same as the default exception output, except it doesn't have the ...skip 24 lines... line in the middle (also no speed slowdown, and no local variables displayed).
 
 Try them out by running test_all.rb in the examples folder, or eyeball the example output files in examples/example_output*
+
 http://github.com/rogerdpack/ruby_backtracer/tree/master
 
 Note: some options depends on ruby-debug [MRI] gem, some don't.
 
-To install clone from github, above.
+To install clone from github, above, then -rscriptname.
 
 related projects: unroller, http://eigenclass.org/hiki/method+arguments+via+introspection, liveconsole, ruby-debug
+
+comments to rogerdpack on github.
