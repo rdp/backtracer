@@ -4,7 +4,7 @@ A library to output higher quality backtraces if an unhandled exception is raise
 ex:
 
 
-running script crash.rb with contents:
+running script crash.rb that has contents:
 def go2(a, b)
  raise
 end
@@ -14,8 +14,9 @@ def go(a);
 end
 
 go '3'
+
 yields:
-C:\dev\ruby\ruby_backtracer>ruby -rbacktrace_with_code_and_locals crash.rb
+C:\dev\ruby\ruby_backtracer\examples>ruby -r../backtrace_with_code_and_locals crash.rb
 
 unhandled exception: crash.rb:2:   raise
         locals: {"a"=>"3", "b"=>55}
@@ -25,18 +26,21 @@ unhandled exception: crash.rb:2:   raise
         crash.rb:5 go(a=>3)
                 locals: {"a"=>"3"}
 
-Wasn't that pretty?
+Wasn't that prettier than the default output:
+crash.rb:2:in `go2': unhandled exception
+        from crash.rb:6:in `go'
+        from crash.rb:9
+?
 
-There are several options allowed, if you don't want as much output.  Given by different script names.
+There are several other options allowed, if you don't want as much output, or want more speed.  Specify by script name.
 
 backtrace_nothing_swallowed.rb is the same as the typical exception output, except it doesn't have the ...skip 24 lines... output in the middle. No speed slowdown.
 
 
+Try them out by running test_all.rb in the examples folder, or eyeball the output files there.
 
-try them all out, some are more verbose than others.
+Note also that you could require one of these files 'in the middle of your script' and it would track parameters and calls from then on.(i.e. if you entered some exception case you could require the file around that time, to avoid slowdown before that).
 
-Note also that you could require one of these files 'in the middle of your script' and it would track thread backtraces from then on
-
-Note: some options depends on ruby-debug [MRI] gem
+Note: some options depends on ruby-debug [MRI] gem, some don't.
 
 related projects: unroller, this: http://eigenclass.org/hiki/method+arguments+via+introspection, liveconsole
