@@ -37,10 +37,11 @@ There are several other options allowed, if you don't want as much output, or wa
 backtrace_nothing_swallowed.rb is the same as the typical exception output, except it doesn't have the ...skip 24 lines... output in the middle. No speed slowdown.
 
 
-Try them out by running test_all.rb in the examples folder, or eyeball the output files there.
-
-Note also that you could require one of these files 'in the middle of your script' and it would track parameters and calls from then on.(i.e. if you entered some exception case you could require the file around that time, to avoid slowdown before that).
+Try them out by running test_all.rb in the examples folder, or eyeball the example output files in examples/example_output*
+http://github.com/rogerdpack/ruby_backtracer/tree/master
 
 Note: some options depends on ruby-debug [MRI] gem, some don't.
 
-related projects: unroller, this: http://eigenclass.org/hiki/method+arguments+via+introspection, liveconsole
+To install clone from github, above.
+
+related projects: unroller, http://eigenclass.org/hiki/method+arguments+via+introspection, liveconsole, ruby-debug
