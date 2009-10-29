@@ -1,4 +1,4 @@
-# this one is easy
+# this one display full BT with code, at the end [no performance loss]
 SCRIPT_LINES__ = {}
 at_exit {
  puts "==== "
