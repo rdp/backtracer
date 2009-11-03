@@ -119,8 +119,8 @@ class Tracer
       return unless p.call event, file, line, id, binding, klass
     end
     
-    saved_crit = Thread.critical
-    Thread.critical = true
+    (saved_crit = Thread.critical) rescue nil
+    (Thread.critical = true) rescue nil
     stdout.printf("#%d:%s:%d:%s:%s: %s",
       get_thread_no,
       file,
@@ -128,7 +128,7 @@ class Tracer
       klass || '',
       EVENT_SYMBOL[event],
       get_line(file, line))
-    Thread.critical = saved_crit
+    (Thread.critical = saved_crit) rescue nil
   end
 
   Single = new
@@ -155,7 +155,7 @@ class Tracer
 end
 
 SCRIPT_LINES__ = {} unless defined? SCRIPT_LINES__
-
+puts caller(0).size
 if $0 == __FILE__
   # direct call
     
@@ -163,6 +163,6 @@ if $0 == __FILE__
   ARGV.shift
   Tracer.on
   require $0
-elsif caller(0).size == 1
+elsif caller(0).size <= 2
   Tracer.on
 end
