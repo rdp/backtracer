@@ -90,12 +90,14 @@ class Tracer
 
     unless list = SCRIPT_LINES__[file]
       begin
-	f = open(file)
-	begin 
-	  SCRIPT_LINES__[file] = list = f.readlines
-	ensure
-	  f.close
-	end
+          raise 'might be a .so file' if file =~ /\.so$/
+	  f = open(file)
+	  begin
+	    SCRIPT_LINES__[file] = list = f.readlines
+	  ensure
+	    f.close
+	  end
+      
       rescue
 	SCRIPT_LINES__[file] = list = []
       end
@@ -143,7 +145,7 @@ class Tracer
 
     saved_crit = Thread.critical
     Thread.critical = true
-# TODO only do the backtrace if last command was 'raise'
+    # TODO only do the backtrace if last command was 'raise'
     if type == 'R'
          Thread.current['backtrace'][@@depths[thread_no] - 1] = [[file, line], [], binding]
          Thread.current['backtrace'] = Thread.current['backtrace'][0..@@depths[thread_no]] # clear old stuffs
