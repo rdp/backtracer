@@ -165,7 +165,8 @@ class Tracer
 	 else
 	   print "WEIRD--please report err spot 1, how to reproduce"
          end
-         print 'args were ', collected.inspect, "\n" if $VERBOSE
+
+         print 'args were ', collected.inspect, "\n" if $VERBOSE # we still collect them for the end backtrace if !$VERBOSE
 
 	 Thread.current['backtrace'][@@depths[thread_no] - 1] = [[@@last_file, @@last_line], collected, previous_frame_binding]
       end
