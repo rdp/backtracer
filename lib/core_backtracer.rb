@@ -12,6 +12,7 @@ Debugger.start # we use this to track args.
 #
 # tracer main class
 #
+require File.dirname(__FILE__) + "/shared"
 class Tracer
   @RCS_ID='-$Id: tracer.rb,v 1.8 1998/05/19 03:42:49 keiju Exp keiju $-'
 
@@ -82,33 +83,6 @@ class Tracer
    self.class.get_line(file, line)
   end
 
-  def self.get_line(file, line)
-    @get_line_procs ||= {}
-    if p = @get_line_procs[file]
-      return p.call(line)
-    end
-
-    unless list = SCRIPT_LINES__[file]
-      begin
-          raise 'might be a .so file' if file =~ /\.so$/
-	  f = open(file)
-	  begin
-	    SCRIPT_LINES__[file] = list = f.readlines
-	  ensure
-	    f.close
-	  end
-      
-      rescue
-	SCRIPT_LINES__[file] = list = []
-      end
-    end
-
-    if l = list[line - 1]
-      l
-    else
-      "-\n"
-    end
-  end
   
   def get_thread_no
     if no = @threads[Thread.current.object_id]
