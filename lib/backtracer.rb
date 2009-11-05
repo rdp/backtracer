@@ -4,9 +4,8 @@ require File.dirname(__FILE__) + "/shared"
 require 'sane'
 
 at_exit {
-
   if $!
-    puts "==== "
+    puts "==== " + $!.inspect + ' ' + $!.to_s
     bt2 = $!.backtrace
     backtrace_with_code = $!.backtrace.map{ |bt_line|
       if OS.windows? && bt_line[1..1] == ':'
@@ -26,5 +25,6 @@ at_exit {
   else
     puts "(no exception found to backtrace)"
   end
-  exit!
+  # exit! TODO I guess do this once ours isn't *so* ugly
+  # TODO compare with that fella xray
 }
