@@ -1,7 +1,10 @@
-if (ARGV.include? '-h') || (ARGV.include? '--help')
+#!/usr/bin/env ruby
+# gems will fill this in for me
+
+if true # (ARGV.include? '-h') || (ARGV.include? '--help')
  dir = File.dirname(__FILE__) + '/../lib'
- puts 'options:'
- for file in Dir[dir + '/backtracer*.rb']
+ puts 'options: ( -r filename) '
+ for file in Dir[dir + '/*.rb']
   puts File.basename(file)
  end
 end
