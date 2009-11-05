@@ -1,0 +1,7 @@
+if (ARGV.include? '-h') || (ARGV.include? '--help')
+ dir = File.dirname(__FILE__) + '/../lib'
+ puts 'options:'
+ for file in Dir[dir + '/*']
+  puts File.basename(file)
+ end
+end
