@@ -83,11 +83,11 @@ then run backtracer against it.
 
 == Other ==
 
-Note that you can load the better backtracing capability within a script itself
+Note that you can load the better backtracing capability within a script itself:
 
 require 'backtracer'
 
-will cause it to output a coded backtrace at exit time, if an unhandled exception occurs.  It doesn't cause any runtime slowdown.
+will cause it to output a coded backtrace at exit time, if an unhandled exception occurs.  Backtracer default and backtracer_simple don't cause runtime slowdown.
 
 You can also add it to your RUBYOPT variable if you always want it to run against all scripts (backtracer_simple and backtracer don't cause any slowdowns).
 Here's how:
