@@ -1,16 +1,25 @@
-ruby_backtracer: output higher quality backtraces if an unhandled exception occurs.  Originally inspired by the frustration of seeling ...24 levels... a few too many times.
+backtracer: ruby gem to output higher quality backtraces if an unhandled exception is thrown.  
 
-There are several options available (the more verbose ones rely on ruby-debug, which slows things down a bit).
 
-ex:
-a script used to output:
-examples>ruby crash.rb
+If you've ever seen 
+...24 levels... 
+and disliked it, this is the gem for you.
+
+It displays the full back trace, with or without code and/or local variables, etc.
+
+There are several options available.
+
+example:
+
+a script that used to output:
+
+>ruby crash.rb
 crash.rb:2:in `go2': unhandled exception
         from crash.rb:6:in `go'
         from crash.rb:9
 
-Using backtracer, it now outputs:
-examples>ruby -rbacktracer_locals crash.rb
+Now outputs:
+>backtracer --locals crash.rb
 
 unhandled exception: crash.rb:2:   raise
         locals: {"a"=>"3", "b"=>55}
@@ -20,7 +29,7 @@ unhandled exception: crash.rb:2:   raise
         crash.rb:5 go(a=>3)
                 locals: {"a"=>"3"}
 or
-examples>ruby -rbacktracer crash.rb
+>backtracer crash.rb
 ====
 crash.rb:2:in `go2'
         raise
@@ -33,78 +42,71 @@ crash.rb:2:in `go2': unhandled exception
         from crash.rb:7:in `go'
         from crash.rb:10
 
+Also included is a --ping option which periodically dumps the current running threads' backtrace(s)--quite useful for figuring out where you code is spending a lot of its time.
 
-All the options are backtracer, backtracer_locals, backtracer_simple, backtracer_tracer
-
+To see all possible options run
+$ backtracer -h
 
 == Installation ==
-
-== 1.9 ==
-
-$ gem install ruby-debug19
-$ gem sources add http://gemcutter.org # if necessary
-$ gem install backtracer
-
-run as above 
-$ ruby -rbacktracer script_name
 
 == 1.8.x ==
 
 $ gem install ruby-debug
 $ gem sources add http://gemcutter.org # if necessary
-$ sudo gem install faster_rubygems # necessary to be able to load gems from the command line -- installs the file rubygemsf into your site_ruby
 $ gem install backtracer
 
-now run them like
-$ ruby -rubygemsf -rbacktracer script_name
+now run like
+$ backtracer script_name
+$ backtracer --locals script_name
 
-the rubygemsf is necessary because for some reason running
-$ ruby -rubygems -rbacktracer script_name 
+== 1.9.1 ==
 
-fails [probably a bug in ruby]
+$ gem install ruby-debug19 # if you want some of the more exotic backtraces
+$ gem sources add http://gemcutter.org # if necessary
+$ gem install backtracer
+
+run as above (backtracer executable), or as a ruby require:
+$ ruby -rbacktracer script_name
+$ ruby -rbacktracer_locals script_name
 
 == Descriptions ==
 
-Try these out if desired:
-create a file like:
+Try out the options:
+create a file like
 
   def go(a)
    raise
   end
   go(3)
 
-then run ruby against it like
-
-ruby -rbacktracer name
-  outputs full backtrace with code of each line [a la Python]
-ruby -rbacktracer_locals name
-  outputs full backtrace with local variables and parameters
-ruby -rbacktracer_simple name
-  outputs backtrace without the ...24 levels... [yea!]
-ruby -backtracer_tracer name
-  same as backtracer_locals except it shows traces of calls as they're made
-
-
-or in 1.8.x
-ruby -rubygemsf -rbacktracer name
-etc.
-
+then run backtracer against it.
 
 == Other ==
 
-Note that you can [if desired] load these within a script iself
+Note that you can load the better backtracing capability within a script itself
+
 require 'backtracer'
 
-and it will output a backtrace if one exists at exit time.
+will cause it to output a coded backtrace at exit time, if an unhandled exception occurs.  It doesn't cause any runtime slowdown.
 
-You can also add it to your RUBYOPT variable if you always want it to run [backtracer_simple and backtracer don't cause any slowdown].
+You can also add it to your RUBYOPT variable if you always want it to run against all scripts (backtracer_simple and backtracer don't cause any slowdowns).
+Here's how:
+1.9:
+
 $ export RUBYOPT=-rbacktracer
 
-if desired.
+1.8.7:
+you'll need to install a helper loader since gems can't load on the command line for some reason.
+
+$ sudo gem install faster_rubygems # the helper--installs faster_rubygems.rb and some other files to your site_ruby
+$ export RUBYOPT='-rfaster_rubygems -rbacktracer'
+
+Enjoy.
 
 == Related projects ==
 unroller, http://eigenclass.org/hiki/method+arguments+via+introspection, liveconsole, ruby-debug
 
-Comments welcome to rdp on github.
+Comments welcome 
+rdp on github.
 
 http://github.com/rdp/backtracer

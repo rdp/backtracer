@@ -1,10 +1,27 @@
 #!/usr/bin/env ruby
-# gems will fill this in for me
 
-if true # (ARGV.include? '-h') || (ARGV.include? '--help')
+if (ARGV.include? '-h') || (ARGV.include? '--help')
  dir = File.dirname(__FILE__) + '/../lib'
- puts 'options: ( -r filename) '
- for file in Dir[dir + '/*.rb']
-  puts File.basename(file)
+ puts 'options: '
+ for file in Dir[dir + '/backtracer_*.rb']
+  puts '--' + File.basename(file)[11..-4] # of backtracer_locals.rb, just locals
  end
+ puts 'ex: $ backtracer filename.rb arg1 arg2'
+ puts 'ex: $ backtracer --simple filename.rb arg1 arg2'
+ puts 'you can also do $ ruby -rtracerr for an improved tracer (though 1.9.2 has the same already patched)'
+ exit
 end
+
+# expect
+# backtracer --plain --simple filename options
+
+if ARGV[0][0..1] == '--'
+ require 'backtracer_' + ARGV[0][2..-1] # take it off, too
+ ARGV.shift
+else
+ require 'backtracer'
+end
+
+$0 = File.expand_path ARGV[0] # for their benefit :)
+ARGV.shift
+load $0

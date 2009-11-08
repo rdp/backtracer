@@ -154,7 +154,7 @@ class Tracer
        type,
        get_line(file, line))
 
-   print out if $VERBOSE
+   print out if $print_trace || $VERBOSE
    @@last_line =  line
    @@last_file = file
    @@last_symbol = type
