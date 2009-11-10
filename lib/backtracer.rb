@@ -5,7 +5,7 @@ require 'sane'
 
 at_exit {
   if $!
-    puts "==== " + $!.inspect + ' ' + $!.to_s
+    puts "==== ", $!.inspect + ' ' + $!.to_s
     bt2 = $!.backtrace
     backtrace_with_code = $!.backtrace.map{ |bt_line|
       if OS.windows? && bt_line[1..1] == ':'
@@ -23,7 +23,7 @@ at_exit {
     puts backtrace_with_code
     puts "===="
   else
-    puts "(no exception found to backtrace)"
+    puts "(no exception found to backtrace)" if $VERBOSE
   end
   # exit! TODO I guess do this once ours isn't *so* ugly
   # TODO compare with that fella xray
