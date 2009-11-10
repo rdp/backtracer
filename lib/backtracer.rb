@@ -5,7 +5,7 @@ require 'sane'
 
 at_exit {
   if $! && !$!.is_a?(SystemExit) # SystemExit's are just normal, not exceptional
-    puts "==== ", $!.inspect + ' ' + $!.to_s
+    puts "\n     " + $!.inspect + ' ' + $!.to_s
     bt2 = $!.backtrace
     backtrace_with_code = $!.backtrace.map{ |bt_line|
       if OS.windows? && bt_line[1..1] == ':'
@@ -21,7 +21,7 @@ at_exit {
       "#{bt_line}\n\t#{actual_line.strip if actual_line}"
     }
     puts backtrace_with_code
-    puts "===="
+#    puts "===="
   else
     puts "(no exception found to backtrace)" if $VERBOSE
   end

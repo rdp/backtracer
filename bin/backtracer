@@ -3,7 +3,7 @@
 if (ARGV.include? '-h') || (ARGV.include? '--help')
  dir = File.dirname(__FILE__) + '/../lib'
  puts 'options: '
- for file in Dir[dir + '/backtracer_*.rb']
+ for file in Dir[dir + '/backtracer_*.rb'].sort.reverse
   puts '--' + File.basename(file)[11..-4] # of backtracer_locals.rb, just locals
  end
  puts 'ex: $ backtracer filename.rb arg1 arg2'
