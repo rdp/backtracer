@@ -39,10 +39,12 @@ time = 1 if $0 == __FILE__
 Thread.new {
   loop {
     sleep time
-    pp fella.call
+    pp 'current stack trace', Time.now, fella.call
   }
 }
 
-if $0 == __FILE__ # a test
+require File.dirname(__FILE__) + '/backtracer' # we want the normal backtracer, too
+
+if $0 == __FILE__ # i.e. a test
  sleep
 end

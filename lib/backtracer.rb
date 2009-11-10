@@ -4,7 +4,7 @@ require File.dirname(__FILE__) + "/shared"
 require 'sane'
 
 at_exit {
-  if $!
+  if $! && !$!.is_a?(SystemExit) # SystemExit's are just normal, not exceptional
     puts "==== ", $!.inspect + ' ' + $!.to_s
     bt2 = $!.backtrace
     backtrace_with_code = $!.backtrace.map{ |bt_line|
