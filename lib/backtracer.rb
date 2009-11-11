@@ -25,9 +25,11 @@ at_exit {
     }.compact
     puts backtrace_with_code
     puts
+    puts 'original backtrace:'
   else
     puts "(backtracer: no exception found to backtrace)" if $VERBOSE
   end
   # exit! TODO I guess do this once ours isn't *so* ugly
+  # I'm not sure it's safe to do that, in case there are other at_exit's [?]
   # TODO compare with that fella xray
 }
