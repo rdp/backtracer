@@ -1,39 +1,56 @@
 
 
+running ruby -rfaster_rubygems -r../lib/backtracer_ctrl_c_debugger.rb crash.rb
+hit ctrl + c to drop into a debugger
 
-running ruby -r../backtrace_nothing_swallowed.rb crash.rb
-crash.rb:2:in `go2': unhandled exception
-	from crash.rb:6:in `go'
-	from crash.rb:9
-==== 
+     RuntimeError
 crash.rb:2:in `go2'
-crash.rb:6:in `go'
-crash.rb:9
-====
+        raise
+crash.rb:7:in `go'
+        go2(a, 55)
+crash.rb:10
+        go '3'
 
-
-
-running ruby -r../backtrace_with_code.rb crash.rb
 crash.rb:2:in `go2': unhandled exception
-	from crash.rb:6:in `go'
-	from crash.rb:9
-==== 
-crash.rb:2:in `go2'
-	raise
-crash.rb:6:in `go'
-	go2(a, 55);
-crash.rb:9
-	go '3'
-====
+        from crash.rb:7:in `go'
+        from crash.rb:10
 
 
 
-running ruby -r../backtrace_with_code_and_locals.rb crash.rb
+running ruby -rfaster_rubygems -r../lib/backtracer_locals.rb crash.rb
 
 unhandled exception: crash.rb:2:   raise
-	locals: {"a"=>"3", "b"=>55}
-	  from:
-	crash.rb:1 go2(a=>3, b=>55)
-		locals: {"a"=>"3", "b"=>55}
-	crash.rb:5 go(a=>3)
-		locals: {"a"=>"3"}
+        locals: {"a"=>"3", "b"=>55}
+          from:
+        crash.rb:1 go2(a=>3, b=>55)
+                locals: {"a"=>"3", "b"=>55}
+        crash.rb:5 go(a=>3)
+                locals: {"a"=>"3", "b"=>3}
+
+
+
+running ruby -rfaster_rubygems -r../lib/backtracer_ping.rb crash.rb
+
+     RuntimeError
+crash.rb:2:in `go2'
+        raise
+crash.rb:7:in `go'
+        go2(a, 55)
+crash.rb:10
+        go '3'
+
+crash.rb:2:in `go2': unhandled exception
+        from crash.rb:7:in `go'
+        from crash.rb:10
+
+
+
+running ruby -rfaster_rubygems -r../lib/backtracer_simple.rb crash.rb
+====
+crash.rb:2:in `go2'
+crash.rb:7:in `go'
+crash.rb:10
+====
+crash.rb:2:in `go2': unhandled exception
+        from crash.rb:7:in `go'
+        from crash.rb:10

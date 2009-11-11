@@ -5,22 +5,32 @@ If you've ever seen
 ...24 levels... 
 and disliked it, this is the gem for you.
 
-It displays the full back trace, with or without code and/or local variables, etc.
+It displays the full back trace, with the code from each line!  It can even display local variables at each level of the call stack, if desired.
 
-There are several options available.
+Example:
 
-example:
+a script that once output:
 
-a script that used to output:
-
->ruby crash.rb
+$ ruby crash.rb
 crash.rb:2:in `go2': unhandled exception
         from crash.rb:6:in `go'
         from crash.rb:9
 
 Now outputs:
->backtracer --locals crash.rb
 
+$ backtracer crash.rb
+
+   RuntimeError
+crash.rb:2:in `go2'
+        raise
+crash.rb:7:in `go'
+        go2(a, 55)
+crash.rb:10
+        go '3'
+
+or outputs
+
+>backtracer --locals crash.rb
 unhandled exception: crash.rb:2:   raise
         locals: {"a"=>"3", "b"=>55}
           from:
@@ -28,41 +38,33 @@ unhandled exception: crash.rb:2:   raise
                 locals: {"a"=>"3", "b"=>55}
         crash.rb:5 go(a=>3)
                 locals: {"a"=>"3"}
-or
->backtracer crash.rb
-====
-crash.rb:2:in `go2'
-        raise
-crash.rb:7:in `go'
-        go2(a, 55)
-crash.rb:10
-        go '3'
-====
-crash.rb:2:in `go2': unhandled exception
-        from crash.rb:7:in `go'
-        from crash.rb:10
 
-Also included is a --ping option which periodically dumps the current running threads' backtrace(s)--quite useful for figuring out where you code is spending a lot of its time.
 
-To see all possible options run
+To see all possible backtrace options run
 $ backtracer -h
+or
+$ backtracer --help
+
+Also included is an option --ping, which periodically dumps the current threads' backtrace(s)--quite useful for profiling to easily see where you code is spending a lot of its time.  There is also another option to it that will print out thread dumps whenever you hit ctrl+c.
+
 
 == Installation ==
 
 == 1.8.x ==
 
-$ gem install ruby-debug
-$ gem sources add http://gemcutter.org # if necessary
+$ gem install ruby-debug # only necessary for the --locals option
+$ gem install jeweler && jeweler tumble # if necessary
 $ gem install backtracer
 
 now run like
-$ backtracer script_name
-$ backtracer --locals script_name
+
+$ backtracer script_name.rb
+$ backtracer --locals script_name.rb arg1 arg2
 
 == 1.9.1 ==
 
-$ gem install ruby-debug19 # if you want some of the more exotic backtraces
-$ gem sources add http://gemcutter.org # if necessary
+$ gem install ruby-debug19 # only necessary for the --locals option
+$ gem install jeweler && jeweler tumble # if necessary
 $ gem install backtracer
 
 run as above (backtracer executable), or as a ruby require:
@@ -79,7 +81,7 @@ create a file like
   end
   go(3)
 
-then run backtracer against it.
+then run backtracer [--xxx] against it.
 
 == Other ==
 
@@ -94,12 +96,19 @@ Here's how:
 1.9:
 
 $ export RUBYOPT=-rbacktracer
+or
+$ export RUBYOPT=-rbacktracer_simple # or whichever one you want
 
-1.8.7:
-you'll need to install a helper loader since gems can't load on the command line for some reason.
 
-$ sudo gem install faster_rubygems # the helper--installs faster_rubygems.rb and some other files to your site_ruby
+1.8:
+
+you'll need to install a helper loader gem since rubygems can't load itself and a gem on the command line for some reason.  Here's how:
+
+$ sudo gem install faster_rubygems # helper--installs faster_rubygems.rb and some other files to your site_ruby dir
 $ export RUBYOPT='-rfaster_rubygems -rbacktracer'
+or
+$ export RUBYOPT='-rfaster_rubygems -rbacktracer_simple'
+
 
 Enjoy.
 

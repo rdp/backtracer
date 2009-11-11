@@ -1,29 +1,29 @@
 # this one display full BT with code, at the end [no performance loss]
 
 require File.dirname(__FILE__) + "/shared"
-require 'sane'
+require 'sane/os'
 
 at_exit {
-  if $! && !$!.is_a?(SystemExit) # SystemExit's are just normal, not exceptional
+  if $! && !$!.is_a?(SystemExit) # SystemExit's are normal, not exceptional
     puts "\n     " + $!.inspect + ' ' + $!.to_s
     bt2 = $!.backtrace
     backtrace_with_code = $!.backtrace.map{ |bt_line|
       if OS.windows? && bt_line[1..1] == ':'
-        #["C", "/dev/ruby/allgems/lib/allgems/GemWorker.rb", "91", "in `unpack'"]      
+        
         drive, file, line, junk = bt_line.split(":")
+	#["C", "/dev/ruby/allgems/lib/allgems/GemWorker.rb", "91", "in `unpack'"]              
         file = drive + ":" + file
       else
         file, line, junk = bt_line.split(":")
       end
       line = line.to_i
-#      line -= 1 unless line == 0 # not sure if needed
       actual_line = Tracer.get_line(file, line)
       "#{bt_line}\n\t#{actual_line.strip if actual_line}"
     }
     puts backtrace_with_code
-#    puts "===="
+    puts
   else
-    puts "(no exception found to backtrace)" if $VERBOSE
+    puts "(backtracer: no exception found to backtrace)" if $VERBOSE
   end
   # exit! TODO I guess do this once ours isn't *so* ugly
   # TODO compare with that fella xray

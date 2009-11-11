@@ -7,8 +7,9 @@ if (ARGV.include? '-h') || (ARGV.include? '--help')
   puts '--' + File.basename(file)[11..-4] # of backtracer_locals.rb, just locals
  end
  puts 'ex: $ backtracer filename.rb arg1 arg2'
- puts 'ex: $ backtracer --simple filename.rb arg1 arg2'
- puts 'you can also do $ ruby -rtracerr for an improved tracer (though 1.9.2 has the same already patched)'
+ puts '$ backtracer --simple filename.rb arg1 arg2'
+ puts 'or its equivalent: $ ruby -rbacktracer_simple filename.rb arg1 arg2'
+ puts '$ ruby -rtracerr'
  exit
 end
 
@@ -22,6 +23,7 @@ else
  require 'backtracer'
 end
 
-$0 = File.expand_path ARGV[0] # for their benefit :)
+$0 = a = File.expand_path( ARGV[0]) # set $0 for their benefit :)
+# known buggy on mingw for some reason?
 ARGV.shift
-load $0
+load a
