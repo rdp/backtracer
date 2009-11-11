@@ -1,6 +1,7 @@
 # this one display full BT with code, at the end [no performance loss]
 
 require File.dirname(__FILE__) + "/shared"
+gem 'sane', '0.9.1'
 require 'sane/os'
 
 at_exit {

@@ -1,4 +1,5 @@
 require 'pp'
+gem 'sane', '0.9.1'
 require 'sane/os'
 
 def xray
