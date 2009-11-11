@@ -1,15 +1,15 @@
 # this one display full BT with code, at the end [no performance loss]
+require 'rbconfig'
+WINDOZE = Config::CONFIG['host_os'] =~ /mswin|mingw/
 
 require File.dirname(__FILE__) + "/shared"
-gem 'sane', '0.9.1'
-require 'sane/os'
 
 at_exit {
   if $! && !$!.is_a?(SystemExit) # SystemExit's are normal, not exceptional
     puts "\n     " + $!.inspect + ' ' + $!.to_s
     bt2 = $!.backtrace
     backtrace_with_code = $!.backtrace.map{ |bt_line|
-      if OS.windows? && bt_line[1..1] == ':'
+      if WINDOZE && bt_line[1..1] == ':'
         
         drive, file, line, junk = bt_line.split(":")
 	#["C", "/dev/ruby/allgems/lib/allgems/GemWorker.rb", "91", "in `unpack'"]              

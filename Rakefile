@@ -7,7 +7,6 @@ begin
 #    gemspec.homepage = "http://github.com/technicalpickles/the-perfect-gem"
 #    gemspec.description = "TODO"
 #    gemspec.authors = ["Josh Nichols"]
-    gemspec.add_dependency 'sane', '>= 0.9.1'
     gemspec.add_dependency 'xray'
   end
 rescue LoadError

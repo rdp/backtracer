@@ -1,0 +1,30 @@
+
+C:\dev\ruby\old\backtracer\examples>backtracer --pinger sleeper.rb
+c:/ruby18/lib/ruby/gems/1.8/gems/backtracer-0.4.1/lib/backtracer.rb:3: warning: already initialized constant WINDOZE
+All threads:[#<Thread:0x3411420 run>, #<Thread:0x28b5580 run>]
+Current thread:#<Thread:0x28b5580>
+C:/dev/ruby/old/backtracer/examples/sleeper.rb:2:in `call'
+C:/dev/ruby/old/backtracer/examples/sleeper.rb:2:in `sleep'
+C:/dev/ruby/old/backtracer/examples/sleeper.rb:2:in `go'
+C:/dev/ruby/old/backtracer/examples/sleeper.rb:4
+c:/ruby18/lib/ruby/gems/1.8/gems/backtracer-0.4.1/bin/backtracer:29:in `load'
+c:/ruby18/lib/ruby/gems/1.8/gems/backtracer-0.4.1/bin/backtracer:29
+c:/ruby18/bin/backtracer:19:in `load'
+c:/ruby18/bin/backtracer:19
+"current stack trace"
+Wed Nov 11 10:57:52 -0700 2009
+1
+All threads:[#<Thread:0x3411420 run>, #<Thread:0x28b5580 run>]
+Current thread:#<Thread:0x28b5580>
+C:/dev/ruby/old/backtracer/examples/sleeper.rb:2:in `call'
+C:/dev/ruby/old/backtracer/examples/sleeper.rb:2:in `sleep'
+C:/dev/ruby/old/backtracer/examples/sleeper.rb:2:in `go'
+C:/dev/ruby/old/backtracer/examples/sleeper.rb:4
+c:/ruby18/lib/ruby/gems/1.8/gems/backtracer-0.4.1/bin/backtracer:29:in `load'
+c:/ruby18/lib/ruby/gems/1.8/gems/backtracer-0.4.1/bin/backtracer:29
+c:/ruby18/bin/backtracer:19:in `load'
+c:/ruby18/bin/backtracer:19
+"current stack trace"
+Wed Nov 11 10:57:57 -0700 2009
+1
+C:\>

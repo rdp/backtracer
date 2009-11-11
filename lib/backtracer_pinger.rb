@@ -1,6 +1,9 @@
 require 'pp'
-gem 'sane', '0.9.1'
-require 'sane/os'
+
+
+require 'rbconfig'
+WINDOZE = Config::CONFIG['host_os'] =~ /mswin|mingw/
+
 
 def xray
  require 'xray'
@@ -25,8 +28,7 @@ elsif respond_to? :caller_for_all_threads
   end
 else
  # weak sauce for the old school users :)
- if OS.windows?
-
+ if WINDOZE
    trap("ILL") { puts "All threads:" + Thread.list.inspect, "Current thread:" + Thread.current.to_s, caller } # puts current thread caller
    fella = proc {  Process.kill "ILL", Process.pid } # send myself a signal
  else

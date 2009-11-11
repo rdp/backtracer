@@ -1,1 +1,3 @@
-system "ruby -v -r../lib/backtrace_with_code_and_locals.rb crash.rb"
+command = "ruby -v -r../lib/backtracer_locals.rb crash.rb"
+puts 'running', command
+system command

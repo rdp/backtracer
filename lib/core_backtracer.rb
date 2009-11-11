@@ -7,8 +7,8 @@
 require 'rubygems'
 require 'ruby-debug'
 Debugger.start # we use this to track args.
+$print_trace = nil unless defined?($print_trace) # avoid warnings
 
-#Debugger.keep_frame_binding = true # whatever this did :P
 #
 # tracer main class
 #

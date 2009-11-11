@@ -1,16 +1,15 @@
-backtracer: ruby gem to output higher quality backtraces if an unhandled exception is thrown.  
+backtracer: gem to output higher quality backtraces if an unhandled exception occurs.  
 
 
 If you've ever seen 
 ...24 levels... 
 and disliked it, this is the gem for you.
 
-It displays the full back trace, with the code from each line!  It can even display local variables at each level of the call stack, if desired.
+It displays the full back trace (no ...'s), along with the code from each line!  It can even display local variables at each level of the call stack, if desired.
 
-Example:
+Examples:
 
 a script that once output:
-
 $ ruby crash.rb
 crash.rb:2:in `go2': unhandled exception
         from crash.rb:6:in `go'
@@ -28,9 +27,13 @@ crash.rb:7:in `go'
 crash.rb:10
         go '3'
 
-or outputs
 
->backtracer --locals crash.rb
+(has the code lines, and if there had been ...'s, would have ovecome them).
+
+or
+
+$backtracer --locals crash.rb
+
 unhandled exception: crash.rb:2:   raise
         locals: {"a"=>"3", "b"=>55}
           from:
@@ -39,13 +42,20 @@ unhandled exception: crash.rb:2:   raise
         crash.rb:5 go(a=>3)
                 locals: {"a"=>"3"}
 
+(displays locals, parameters)
 
 To see all possible backtrace options run
 $ backtracer -h
 or
 $ backtracer --help
 
-Also included is an option --ping, which periodically dumps the current threads' backtrace(s)--quite useful for profiling to easily see where you code is spending a lot of its time.  There is also another option to it that will print out thread dumps whenever you hit ctrl+c.
+Also included is a --ping option, which periodically dumps current threads' backtrace(s)--quite useful for profiling to see where you code is spending a lot of its time (thanks xray gem!).  There is also another option that will print out thread dumps whenever you hit ctrl+c.
+
+More examples 
+
+http://github.com/rdp/backtracer/blob/master/examples/example_test_all_output
+http://github.com/rdp/backtracer/blob/master/examples/example_test_large_output
+
 
 
 == Installation ==
@@ -71,51 +81,35 @@ run as above (backtracer executable), or as a ruby require:
 $ ruby -rbacktracer script_name
 $ ruby -rbacktracer_locals script_name
 
-== Descriptions ==
-
-Try out the options:
-create a file like
-
-  def go(a)
-   raise
-  end
-  go(3)
-
-then run backtracer [--xxx] against it.
-
 == Other ==
 
-Note that you can load the better backtracing capability within a script itself:
+Note that you can load backtracing capability within a script itself by:
 
 require 'backtracer'
 
-will cause it to output a coded backtrace at exit time, if an unhandled exception occurs.  Backtracer default and backtracer_simple don't cause runtime slowdown.
+which will cause it to output a coded backtrace at exit time, if an unhandled exception occurs.  Backtracer default and backtracer_simple don't cause runtime slowdown, so sometimes you just want to add this by default.  If so, then add it to your RUBYOPT variable.  (Once I did this, I wondered why I would ever want anything else).  Here's how:
 
-You can also add it to your RUBYOPT variable if you always want it to run against all scripts (backtracer_simple and backtracer don't cause any slowdowns).
-Here's how:
 1.9:
 
 $ export RUBYOPT=-rbacktracer
 or
 $ export RUBYOPT=-rbacktracer_simple # or whichever one you want
 
-
 1.8:
 
-you'll need to install a helper loader gem since rubygems can't load itself and a gem on the command line for some reason.  Here's how:
+you'll need to install a helper gem since rubygems can't load both itself and a gem on the command line for some reason.
 
-$ sudo gem install faster_rubygems # helper--installs faster_rubygems.rb and some other files to your site_ruby dir
+$ sudo gem install faster_rubygems # the helper--installs faster_rubygems.rb and some other files to your site_ruby dir
 $ export RUBYOPT='-rfaster_rubygems -rbacktracer'
 or
 $ export RUBYOPT='-rfaster_rubygems -rbacktracer_simple'
 
-
 Enjoy.
 
-== Related projects ==
-unroller, http://eigenclass.org/hiki/method+arguments+via+introspection, liveconsole, ruby-debug
+== Other related projects ==
 
-Comments welcome 
-rdp on github.
+unroller, http://eigenclass.org/hiki/method+arguments+via+introspection, liveconsole, ruby-debug (thanks guys!)
+
+Comments welcome.
 
 http://github.com/rdp/backtracer
