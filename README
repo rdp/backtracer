@@ -5,6 +5,8 @@ If you've ever seen
 ...24 levels... 
 and disliked it, this is the gem for you.
 
+If you've ever wished an exception printout would display the code of the lines in a backtrace (a la Python), this is for you.
+
 It displays the full back trace (no ...'s), along with the code from each line!  It can even display local variables at each level of the call stack, if desired.
 
 Examples:
@@ -28,9 +30,9 @@ crash.rb:10
         go '3'
 
 
-(has the code lines, and if there had been ...'s, would have ovecome them).
+(Note--has the code lines, and if there had been ...'s, would have ovecome them).
 
-or
+or the --locals option
 
 $backtracer --locals crash.rb
 
@@ -42,21 +44,21 @@ unhandled exception: crash.rb:2:   raise
         crash.rb:5 go(a=>3)
                 locals: {"a"=>"3"}
 
-(displays locals, parameters)
+(displays locals, parameters kind of)
+
+Also included is a --ping option, which periodically dumps current threads' backtrace(s)--quite useful for profiling to see where you code is spending a lot of its time (thanks xray gem!).  There is also an option that will print out thread dumps whenever you hit ctrl+c.
 
 To see all possible backtrace options run
 $ backtracer -h
 or
 $ backtracer --help
 
-Also included is a --ping option, which periodically dumps current threads' backtrace(s)--quite useful for profiling to see where you code is spending a lot of its time (thanks xray gem!).  There is also another option that will print out thread dumps whenever you hit ctrl+c.
 
-More examples 
+More example outputs:
 
 http://github.com/rdp/backtracer/blob/master/examples/example_test_all_output
 http://github.com/rdp/backtracer/blob/master/examples/example_test_large_output
-
-
+http://github.com/rdp/backtracer/blob/master/examples/pinger_example
 
 == Installation ==
 

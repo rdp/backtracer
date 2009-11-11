@@ -9,6 +9,7 @@ at_exit {
     puts "\n     " + $!.inspect + ' ' + $!.to_s
     bt2 = $!.backtrace
     backtrace_with_code = $!.backtrace.map{ |bt_line|
+      next if bt_line.include? 'bin/backtracer' # binary lines...
       if WINDOZE && bt_line[1..1] == ':'
         
         drive, file, line, junk = bt_line.split(":")
@@ -19,8 +20,9 @@ at_exit {
       end
       line = line.to_i
       actual_line = Tracer.get_line(file, line)
+
       "#{bt_line}\n\t#{actual_line.strip if actual_line}"
-    }
+    }.compact
     puts backtrace_with_code
     puts
   else
