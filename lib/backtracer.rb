@@ -8,6 +8,10 @@ at_exit {
   if $! && !$!.is_a?(SystemExit) # SystemExit's are normal, not exceptional
     puts "\n     " + $!.inspect + ' ' + $!.to_s
     bt2 = $!.backtrace
+
+    max = 0
+    $!.backtrace.each{|bt_line| max = [bt_line.length, max].max}
+
     backtrace_with_code = $!.backtrace.map{ |bt_line|
       next if bt_line.include? 'bin/backtracer' # binary lines...
       if WINDOZE && bt_line[1..1] == ':'
@@ -20,12 +24,11 @@ at_exit {
       end
       line = line.to_i
       actual_line = Tracer.get_line(file, line)
-
-      "#{bt_line}\n\t#{actual_line.strip if actual_line}"
+     
+      "%-#{max + 1}s #{"\n\t" unless defined?($same_line)}%s" % [bt_line, (actual_line.strip if actual_line)]
     }.compact
     puts backtrace_with_code
-    puts
-    puts 'original backtrace:'
+    $!.set_backtrace [] # avoid the original backtrace
   else
     puts "(backtracer: no exception found to backtrace)" if $VERBOSE
   end
