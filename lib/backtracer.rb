@@ -6,7 +6,9 @@ require File.dirname(__FILE__) + "/shared"
 
 at_exit {
   if $! && !$!.is_a?(SystemExit) # SystemExit's are normal, not exceptional
-    print "\n\t" unless defined?($same_line)
+    print "\n"
+    print "\t" unless defined?($same_line)
+    
     puts $!.inspect + ' ' + $!.to_s
 
     max = 0
@@ -29,7 +31,8 @@ at_exit {
     }.compact
     puts backtrace_with_code
     puts # blank line
-    $!.set_backtrace [] # avoid the original backtrace being outputted--though annoyingly it does still output its #to_s...
+    # for some reason this can be nil...
+    $!.set_backtrace [] if $! # avoid the original backtrace being outputted--though annoyingly it does still output its #to_s...
     
   else
     puts "(backtracer: no exception found to backtrace)" if $VERBOSE
