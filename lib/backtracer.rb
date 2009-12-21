@@ -35,7 +35,7 @@ at_exit {
     $!.set_backtrace [] if $! # avoid the original backtrace being outputted--though annoyingly it does still output its #to_s...
     
   else
-    puts "(backtracer: no exception found to backtrace)" if $VERBOSE
+    puts "(backtracer: no exception found to backtrace)" if $DEBUG
   end
   # exit! TODO I guess do this once ours isn't *so* ugly
   # I'm not sure it's safe to do that, in case there are other at_exit's [?]

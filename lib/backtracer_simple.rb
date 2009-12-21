@@ -5,6 +5,6 @@ at_exit {
    puts $!.backtrace.join("\n")
    puts "===="
  else
-   puts "(no exception detected)"
+   puts "(no exception detected)" if $DEBUG
  end
 }
