@@ -239,16 +239,6 @@ end
 
 SCRIPT_LINES__ = {} unless defined? SCRIPT_LINES__
 Tracer::on
-if $0 == __FILE__
-  # direct call
-    
-  $0 = ARGV[0]
-  ARGV.shift
-  Tracer.on
-  require $0
-elsif caller(0).size == 1
-  Tracer.on
-end
 
 # TODO: do are arg snapshots capture it right [soon enough]?
 # TODO: don't output error if none thrown :)
