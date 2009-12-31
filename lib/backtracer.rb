@@ -6,6 +6,7 @@ DOZE = Config::CONFIG['host_os'] =~ /mswin|mingw/
 require File.dirname(__FILE__) + "/shared"
 
 at_exit {
+  exception_that_killed_us = $!
   if $! && !$!.is_a?(SystemExit) # SystemExit's are normal, not exceptional
     print "\n"
     print "\t" unless defined?($same_line)
@@ -27,7 +28,7 @@ at_exit {
       end
       line = line.to_i
       actual_code = Tracer.get_line(file, line)
-      output_line = ''
+      output_line = '   '
       output_line += "%-#{max + 1}s " % bt_line unless $no_code_line_numbers
       if actual_code && actual_code != '-'
         output_line += "\n\t" unless defined?($same_line)
@@ -67,8 +68,7 @@ at_exit {
     puts backtrace_with_code
     puts # blank line
     # for some reason this can be nil...
-    $!.set_backtrace [] if $! # avoid the original backtrace being outputted--though annoyingly it does still output its #to_s...
-    
+    exception_that_killed_us.set_backtrace [] # avoid the original backtrace being outputted--though annoyingly it does still output its #to_s...
   else
     puts "(backtracer: no exception found to backtrace)" if $DEBUG
   end
