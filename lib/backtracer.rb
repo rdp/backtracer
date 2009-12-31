@@ -16,7 +16,7 @@ at_exit {
     $!.backtrace.each{|bt_line| max = [bt_line.length, max].max}
 
     backtrace_with_code = $!.backtrace.map{ |bt_line|
-      next if bt_line.include? 'bin/backtracer' # binary lines...
+      next if bt_line.include? 'bin/backtracer' # lines from ourself...
       if DOZE && bt_line[1..1] == ':'
         
         drive, file, line, junk = bt_line.split(":")
@@ -26,10 +26,44 @@ at_exit {
         file, line, junk = bt_line.split(":")
       end
       line = line.to_i
-      actual_line = Tracer.get_line(file, line)
-     
-      "%-#{max + 1}s #{"\n\t" unless defined?($same_line)}%s" % [bt_line, (actual_line.strip if actual_line)]
-    }.compact
+      actual_code = Tracer.get_line(file, line)
+      output_line = ''
+      output_line += "%-#{max + 1}s " % bt_line unless $no_code_line_numbers
+      if actual_code && actual_code != '-'
+        output_line += "\n\t" unless defined?($same_line)
+        output_line += actual_code.strip
+      end
+      output_line
+    }
+
+    previous_line = nil
+    count = 0
+
+    backtrace_with_code = backtrace_with_code.map{|line|
+        if previous_line == nil
+          # startup
+          previous_line = line
+          line
+        elsif previous_line == line
+          # redundant line
+          count += 1
+        
+          nil
+        else
+          # good line
+          previous_line = line
+          if count > 0
+            # first good line after a string of bad
+            a = ["                 (repeat #{count} times) ", line]
+            count = 0          
+            a
+           else
+            line
+          end
+        end
+    }.flatten.compact
+
+
     puts backtrace_with_code
     puts # blank line
     # for some reason this can be nil...

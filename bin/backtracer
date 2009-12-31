@@ -1,15 +1,14 @@
 #!/usr/bin/env ruby
 
-if (ARGV.include? '-h') || (ARGV.include? '--help')
+if (ARGV.include? '-h') || (ARGV.include? '--help') || ARGV.length == 0
  dir = File.dirname(__FILE__) + '/../lib'
  puts 'options: '
  for file in Dir[dir + '/backtracer_*.rb'].sort.reverse
   puts '--' + File.basename(file)[11..-4] # of backtracer_locals.rb, just locals
  end
- puts 'ex: $ backtracer filename.rb arg1 arg2'
+ puts 'ex\'s:', '$ backtracer filename.rb arg1 arg2'
  puts '$ backtracer --simple filename.rb arg1 arg2'
- puts 'or its equivalent: $ ruby -rbacktracer_simple filename.rb arg1 arg2'
- puts '$ ruby -rtracerr'
+ puts 'or its equivalent:', '$ ruby -rbacktracer_simple filename.rb arg1 arg2'
  exit
 end
 
