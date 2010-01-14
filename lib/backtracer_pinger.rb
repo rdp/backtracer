@@ -1,16 +1,16 @@
 require 'pp'
-
-
-require 'rbconfig'
-WINDOZE = Config::CONFIG['host_os'] =~ /mswin|mingw/
+WINDOZE = (ENV['OS'] == 'Windows_NT')
 
 
 def xray
+ # unfortunately xray is linux only I think...
+ # it's not all that, anyway...
  require 'xray'
  proc { Process.kill "QUIT", Process.pid; '' }
 end
 
 if Thread.current.respond_to? :backtrace
+  # 1.9.2
   fella = proc { 
     out = {}
     Thread.list.each{|t|
@@ -19,7 +19,7 @@ if Thread.current.respond_to? :backtrace
     out    
   }
 elsif respond_to? :caller_for_all_threads
-  if OS.windows?
+  if WINDOZE
     fella = proc {
       caller_for_all_threads
     }
@@ -29,8 +29,8 @@ elsif respond_to? :caller_for_all_threads
 else
  # weak sauce for the old school users :)
  if WINDOZE
-   trap("ILL") { puts "All threads:" + Thread.list.inspect, "Current thread:" + Thread.current.to_s, caller } # puts current thread caller
-   fella = proc {  Process.kill "ILL", Process.pid } # send myself a signal
+   trap("TERM") { puts "All threads:" + Thread.list.inspect, "Current thread:" + Thread.current.to_s, caller } # puts current thread caller
+   fella = proc {  Process.kill "TERM", Process.pid } # send myself a signal
  else
    fella = xray
  end
